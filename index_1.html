@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altaf Dahima | Graphic Designer Portfolio</title>
+    <meta name="description" content="Portfolio of Altaf Dahima, a creative Graphic Designer specializing in Photoshop, Manipulation, and Visual Art.">
+    <meta name="keywords" content="Graphic Design, Photoshop, Portfolio, Creative, UI/UX, Retouching, Altaf Dahima">
+
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-yellow: #FFD700;
+            --accent-blue: #007BFF;
+            --dark-bg: #09090b;
+            --card-bg: #18181b;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-yellow);
+            color: black;
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary:hover { background-color: #facc15; transform: scale(1.05); }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-yellow);
+            font-weight: 700;
+            padding: 0.75rem 2rem;
+            border: 1px solid var(--primary-yellow);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.875rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-outline:hover { background-color: var(--primary-yellow); color: black; transform: scale(1.05); }
+
+        .section-padding { padding: 6rem 1.5rem; }
+        @media (min-width: 768px) { .section-padding { padding: 6rem 3rem; } }
+        @media (min-width: 1024px) { .section-padding { padding: 6rem 6rem; } }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.75rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 33%;
+            height: 4px;
+            background-color: var(--primary-yellow);
+        }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0) translateX(-50%); } 50% { transform: translateY(-10px) translateX(-50%); } }
+        @keyframes revealUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes revealLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes revealRight { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-zoom-in { animation: zoomIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-bounce-custom { animation: bounce 2s ease-in-out infinite; }
+
+        /* Cursor */
+        #custom-cursor { position: fixed; inset: 0; pointer-events: none; z-index: 9999; mix-blend-mode: difference; display: none; }
+        @media (min-width: 768px) { #custom-cursor { display: block; } }
+        .cursor-dot { position: absolute; width: 8px; height: 8px; background: var(--primary-yellow); border-radius: 50%; transform: translate(-50%, -50%); transition: opacity 0.3s; }
+        .cursor-ring { position: absolute; border-radius: 50%; border: 1px solid var(--primary-yellow); transform: translate(-50%, -50%); transition: all 0.3s ease-out; }
+
+        /* Navbar */
+        nav { position: fixed; width: 100%; z-index: 50; transition: all 0.3s; padding: 1.5rem 0; }
+        nav.scrolled { background-color: rgba(9,9,11,0.95); backdrop-filter: blur(4px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1rem 0; }
+        .nav-link { font-size: 0.75rem; font-weight: 500; color: #fff; text-decoration: none; text-transform: uppercase; letter-spacing: 0.1em; transition: color 0.3s; font-family: 'Inter', sans-serif; }
+        .nav-link:hover { color: var(--primary-yellow); }
+
+        /* Hero */
+        .hero-bg { position: absolute; inset: 0; z-index: 0; transition: transform 0.3s ease-out; }
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.3; }
+        .hero-overlay-t { position: absolute; inset: 0; background: linear-gradient(to top, var(--dark-bg), rgba(9,9,11,0.8), transparent); }
+        .hero-overlay-r { position: absolute; inset: 0; background: linear-gradient(to right, var(--dark-bg), transparent); }
+
+        /* Skill Bar */
+        .skill-bar-fill { height: 100%; background: var(--primary-yellow); transition: width 1s ease-out; }
+        .skill-card { background: var(--card-bg); padding: 2rem; border: 1px solid rgba(255,255,255,0.05); transition: all 0.3s; }
+        .skill-card:hover { border-color: var(--primary-yellow); transform: translateY(-8px); box-shadow: 0 10px 30px rgba(255,215,0,0.1); }
+
+        /* Portfolio */
+        .portfolio-item { position: relative; overflow: hidden; cursor: pointer; break-inside: avoid; margin-bottom: 1.5rem; }
+        .portfolio-item img { width: 100%; height: auto; object-fit: contain; transition: transform 0.7s; display: block; }
+        .portfolio-item:hover img { transform: scale(1.1); }
+        .portfolio-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.4), transparent); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; transition: all 0.3s; }
+        .portfolio-expand { position: absolute; top: 1rem; right: 1rem; background: var(--primary-yellow); border-radius: 50%; padding: 0.5rem; opacity: 0; transform: translateY(8px); transition: all 0.3s; }
+        .portfolio-item:hover .portfolio-expand { opacity: 1; transform: translateY(0); }
+        .filter-btn { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.5rem 0.75rem; border: 1px solid rgba(255,255,255,0.1); color: #9ca3af; background: transparent; cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif; }
+        .filter-btn:hover { color: white; border-color: white; }
+        .filter-btn.active { background: var(--primary-yellow); color: black; border-color: var(--primary-yellow); }
+
+        /* Lightbox */
+        .lightbox { position: fixed; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.95); backdrop-filter: blur(4px); padding: 1rem; }
+        .lightbox-inner { position: relative; width: 100%; max-width: 72rem; max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+        /* Mobile menu */
+        .mobile-menu { position: absolute; top: 100%; left: 0; width: 100%; background: var(--dark-bg); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+
+        /* Reveal on scroll */
+        .reveal { opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.revealed { opacity: 1; transform: none !important; }
+        .reveal-up { transform: translateY(40px); }
+        .reveal-left { transform: translateX(-40px); }
+        .reveal-right { transform: translateX(40px); }
+
+        /* Contact form */
+        .contact-input { width: 100%; background: #121212; border: 1px solid rgba(255,255,255,0.1); padding: 1rem; color: white; outline: none; transition: border-color 0.3s; font-family: 'Inter', sans-serif; font-size: 1rem; }
+        .contact-input:focus { border-color: var(--primary-yellow); }
+        .contact-input::placeholder { color: #4b5563; }
+
+        /* Education */
+        .edu-card { background: var(--card-bg); padding: 2rem; border-left: 4px solid var(--primary-yellow); transition: all 0.3s; }
+        .edu-card:hover { transform: translateX(8px); }
+
+        /* Footer */
+        footer a { text-decoration: none; }
+
+        /* Columns layout */
+        .masonry { column-count: 1; column-gap: 1.5rem; }
+        @media (min-width: 640px) { .masonry { column-count: 2; } }
+        @media (min-width: 1024px) { .masonry { column-count: 3; } }
+
+        /* Social */
+        .social-btn { width: 2.5rem; height: 2.5rem; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; transition: all 0.3s; text-decoration: none; color: white; }
+        .social-btn:hover { background: var(--primary-yellow); border-color: var(--primary-yellow); color: black; }
+
+        /* Icon fallbacks using CSS shapes */
+        .icon { display: inline-flex; align-items: center; justify-content: center; }
+
+        /* Print */
+        @media print {
+            @page { margin: 1cm; size: A4; }
+            body { background: white !important; color: black !important; }
+            nav, button, #custom-cursor { display: none !important; }
+            section { background: white !important; padding: 1.5rem 0 !important; }
+            h1, h2, h3 { color: black !important; }
+            p, li, span, div { color: #333 !important; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--dark-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--primary-yellow); border-radius: 2px; }
+
+        /* SVG Icons */
+        svg { display: inline-block; vertical-align: middle; }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+
+// ── SVG ICONS ──────────────────────────────────────────────────────────────────
+const Icon = ({ name, size = 20, color = 'currentColor', strokeWidth = 2 }) => {
+    const icons = {
+        menu: <><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></>,
+        x: <><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>,
+        'arrow-down': <><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></>,
+        mail: <><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></>,
+        phone: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8 8.09a16 16 0 0 0 6 6l.62-.62a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>,
+        'file-down': <><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></>,
+        'maximize-2': <><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></>,
+        layers: <><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></>,
+        zap: <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>,
+        image: <><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></>,
+        'pen-tool': <><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></>,
+        pencil: <><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></>,
+        printer: <><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></>,
+        'share-2': <><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></>,
+        facebook: <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>,
+        instagram: <><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></>,
+        twitter: <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>,
+        linkedin: <><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></>,
+        'book-open': <><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></>,
+        fingerprint: <><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M2 12a10 10 0 0 1 18-6"/><path d="M2 17h2.5"/><path d="M21.97 13c.15 2.42-.71 4.72-1.97 6"/><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M9 6.8a6 6 0 0 1 9 5.2v2"/></>,
+        'layout-dashboard': <><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></>,
+        'wand-sparkles': <><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></>,
+        'graduation-cap': <><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></>,
+        award: <><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></>,
+        external: <><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></>,
+    };
+    return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+            {icons[name] || null}
+        </svg>
+    );
+};
+
+// ── REVEAL COMPONENT ───────────────────────────────────────────────────────────
+function Reveal({ children, direction = 'up', delay = 0, className = '' }) {
+    const ref = React.useRef(null);
+    const [visible, setVisible] = React.useState(false);
+
+    React.useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+            { threshold: 0.1 }
+        );
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, []);
+
+    const dirClass = direction === 'left' ? 'reveal-left' : direction === 'right' ? 'reveal-right' : 'reveal-up';
+
+    return (
+        <div
+            ref={ref}
+            className={`reveal ${dirClass} ${visible ? 'revealed' : ''} ${className}`}
+            style={{ transitionDelay: visible ? `${delay}ms` : '0ms' }}
+        >
+            {children}
+        </div>
+    );
+}
+
+// ── CUSTOM CURSOR ──────────────────────────────────────────────────────────────
+function CustomCursor() {
+    const [mouse, setMouse] = React.useState({ x: 0, y: 0 });
+    const [follower, setFollower] = React.useState({ x: 0, y: 0 });
+    const [hovering, setHovering] = React.useState(false);
+    const mouseRef = React.useRef({ x: 0, y: 0 });
+
+    React.useEffect(() => {
+        const onMove = (e) => {
+            mouseRef.current = { x: e.clientX, y: e.clientY };
+            setMouse({ x: e.clientX, y: e.clientY });
+        };
+        const onOver = (e) => {
+            setHovering(!!e.target.closest('a, button, input, textarea, [data-hover]'));
+        };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseover', onOver);
+        return () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseover', onOver); };
+    }, []);
+
+    React.useEffect(() => {
+        let id;
+        const animate = () => {
+            setFollower(prev => ({
+                x: prev.x + (mouseRef.current.x - prev.x) * 0.15,
+                y: prev.y + (mouseRef.current.y - prev.y) * 0.15
+            }));
+            id = requestAnimationFrame(animate);
+        };
+        animate();
+        return () => cancelAnimationFrame(id);
+    }, []);
+
+    return (
+        <div id="custom-cursor">
+            <div className="cursor-dot" style={{ left: mouse.x, top: mouse.y, opacity: hovering ? 0 : 1 }} />
+            <div className="cursor-ring" style={{
+                left: follower.x, top: follower.y,
+                width: hovering ? 64 : 32, height: hovering ? 64 : 32,
+                opacity: hovering ? 0.4 : 0.6,
+                backgroundColor: hovering ? 'var(--primary-yellow)' : 'transparent',
+                mixBlendMode: hovering ? 'normal' : undefined
+            }} />
+        </div>
+    );
+}
+
+// ── NAVBAR ─────────────────────────────────────────────────────────────────────
+function Navbar() {
+    const [open, setOpen] = React.useState(false);
+    const [scrolled, setScrolled] = React.useState(false);
+
+    React.useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 50);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    const links = [
+        { name: 'About', href: '#about' },
+        { name: 'Skills', href: '#skills' },
+        { name: 'Portfolio', href: '#portfolio' },
+        { name: 'Education', href: '#education' },
+        { name: 'Contact', href: '#contact' },
+    ];
+
+    return (
+        <nav className={scrolled ? 'scrolled' : ''} style={{ position: 'fixed', top: 0, width: '100%', zIndex: 50 }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <a href="#" style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.05em', color: 'white', textDecoration: 'none', fontFamily: 'Oswald, sans-serif' }}>
+                    ALTAF<span style={{ color: 'var(--primary-yellow)' }}>.</span>DAHIMA
+                </a>
+
+                {/* Desktop */}
+                <div style={{ display: 'none', alignItems: 'center', gap: '2rem' }} className="desktop-nav">
+                    {links.map(l => <a key={l.name} href={l.href} className="nav-link">{l.name}</a>)}
+                    <button onClick={() => window.print()} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', border: '1px solid var(--primary-yellow)', color: 'var(--primary-yellow)', padding: '0.625rem 1.25rem', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', background: 'transparent', cursor: 'pointer', transition: 'all 0.3s', fontFamily: 'Inter, sans-serif' }}
+                        onMouseEnter={e => { e.target.style.background = 'var(--primary-yellow)'; e.target.style.color = 'black'; }}
+                        onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.color = 'var(--primary-yellow)'; }}>
+                        <Icon name="file-down" size={16} /> Save as PDF
+                    </button>
+                </div>
+
+                {/* Mobile toggle */}
+                <button onClick={() => setOpen(!open)} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }} className="mobile-toggle">
+                    <Icon name={open ? 'x' : 'menu'} size={24} />
+                </button>
+            </div>
+
+            {open && (
+                <div className="mobile-menu">
+                    {links.map(l => (
+                        <a key={l.name} href={l.href} className="nav-link" style={{ fontSize: '1rem' }} onClick={() => setOpen(false)}>{l.name}</a>
+                    ))}
+                    <button onClick={() => { setOpen(false); setTimeout(() => window.print(), 100); }} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'none', border: 'none', color: 'var(--primary-yellow)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer', fontFamily: 'Inter, sans-serif', paddingTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                        <Icon name="file-down" size={16} /> Save as PDF
+                    </button>
+                </div>
+            )}
+
+            <style>{`
+                @media (min-width: 768px) {
+                    .desktop-nav { display: flex !important; }
+                    .mobile-toggle { display: none !important; }
+                    .mobile-menu { display: none !important; }
+                }
+            `}</style>
+        </nav>
+    );
+}
+
+// ── HERO ───────────────────────────────────────────────────────────────────────
+function Hero() {
+    const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
+
+    React.useEffect(() => {
+        const onMove = (e) => setMousePos({
+            x: (e.clientX / window.innerWidth - 0.5) * 30,
+            y: (e.clientY / window.innerHeight - 0.5) * 30
+        });
+        window.addEventListener('mousemove', onMove);
+        return () => window.removeEventListener('mousemove', onMove);
+    }, []);
+
+    return (
+        <section id="home" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+            <div className="hero-bg" style={{ transform: `translate(${mousePos.x}px, ${mousePos.y}px) scale(1.05)` }}>
+                <img src="https://images.unsplash.com/photo-1626785774573-4b799314346d?q=80&w=2070&auto=format&fit=crop" alt="Creative Background" />
+                <div className="hero-overlay-t" />
+                <div className="hero-overlay-r" />
+            </div>
+
+            <div style={{ maxWidth: '1280px', width: '100%', margin: '0 auto', padding: '0 1.5rem', position: 'relative', zIndex: 10, paddingTop: '5rem' }}>
+                <div style={{ maxWidth: '56rem' }}>
+                    <Reveal delay={100} direction="up">
+                        <p style={{ color: 'var(--primary-yellow)', fontWeight: 700, letterSpacing: '0.2em', marginBottom: '1rem', fontSize: '0.875rem' }}>MULTIDISCIPLINARY GRAPHIC DESIGNER</p>
+                    </Reveal>
+                    <Reveal delay={300} direction="up">
+                        <h1 style={{ fontSize: 'clamp(3rem, 10vw, 7rem)', fontWeight: 700, lineHeight: 1, marginBottom: '1.5rem' }}>
+                            DESIGNING <br/>
+                            <span style={{ background: 'linear-gradient(to right, #fff, #71717a)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>IMPACTFUL</span> <br/>
+                            <span style={{ color: 'var(--primary-yellow)' }}>EXPERIENCES</span>
+                        </h1>
+                    </Reveal>
+                    <Reveal delay={500} direction="up">
+                        <p style={{ fontSize: '1.125rem', color: 'var(--text-muted)', maxWidth: '40rem', marginBottom: '2.5rem', lineHeight: 1.7 }}>
+                            Proficient in Photoshop, Illustrator, Figma, and CorelDRAW. I craft cohesive brand identities, stunning print media, and engaging user interfaces.
+                        </p>
+                    </Reveal>
+                    <Reveal delay={700} direction="up">
+                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                            <a href="#portfolio" className="btn-primary">View Portfolio</a>
+                            <a href="#contact" className="btn-outline">Let's Talk</a>
+                        </div>
+                    </Reveal>
+                </div>
+            </div>
+
+            <div style={{ position: 'absolute', bottom: '2.5rem', left: '50%', transform: 'translateX(-50%)', animation: 'bounce 2s ease-in-out infinite' }}>
+                <Icon name="arrow-down" size={28} color="var(--primary-yellow)" />
+            </div>
+        </section>
+    );
+}
+
+// ── ABOUT ──────────────────────────────────────────────────────────────────────
+function About() {
+    return (
+        <section id="about" className="section-padding" style={{ backgroundColor: 'var(--card-bg)' }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4rem', alignItems: 'center' }}>
+                    <style>{`@media (min-width: 768px) { .about-grid { grid-template-columns: 1fr 1fr !important; } }`}</style>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4rem', alignItems: 'center' }} className="about-grid">
+                        <Reveal direction="left">
+                            <div style={{ position: 'relative', padding: '1rem', animation: 'float 6s ease-in-out infinite' }} className="group">
+                                <div style={{ position: 'absolute', top: 0, left: 0, width: 128, height: 128, borderTop: '4px solid var(--primary-yellow)', borderLeft: '4px solid var(--primary-yellow)', opacity: 0.5 }} />
+                                <div style={{ position: 'absolute', bottom: 0, right: 0, width: 128, height: 128, borderBottom: '4px solid var(--primary-yellow)', borderRight: '4px solid var(--primary-yellow)', opacity: 0.5 }} />
+                                <div style={{ position: 'relative', zIndex: 1, overflow: 'hidden', border: '2px solid rgba(255,255,255,0.1)', background: 'var(--card-bg)' }}>
+                                    <img
+                                        src="https://app.trickle.so/storage/public/images/usr_1b475deb10000001/af5279c8-ade3-4066-8f86-d9824d715f30.png"
+                                        alt="Altaf Dahima"
+                                        style={{ width: '100%', height: 550, objectFit: 'cover', objectPosition: 'top', filter: 'grayscale(100%)', transition: 'all 0.7s' }}
+                                        onMouseEnter={e => { e.target.style.filter = 'grayscale(0%)'; e.target.style.transform = 'scale(1.05)'; }}
+                                        onMouseLeave={e => { e.target.style.filter = 'grayscale(100%)'; e.target.style.transform = 'scale(1)'; }}
+                                    />
+                                </div>
+                            </div>
+                        </Reveal>
+
+                        <Reveal direction="right" delay={200}>
+                            <div>
+                                <h2 className="section-title">About Me</h2>
+                                <h3 style={{ fontSize: '1.5rem', color: 'white', marginBottom: '1.5rem', fontWeight: 300, fontFamily: 'Inter, sans-serif', textTransform: 'none' }}>
+                                    I am a <span style={{ color: 'var(--primary-yellow)', fontWeight: 700 }}>Creator</span> ready to make an impact.
+                                </h3>
+                                <div style={{ color: 'var(--text-muted)', lineHeight: 1.8, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    <p>My name is Altaf Dahima, a passionate graphic designer based in Jaipur City. I have recently completed my education and am eager to kickstart my professional journey in the creative industry.</p>
+                                    <p>My toolkit extends far beyond just photo manipulation. I have mastered <strong style={{ color: 'white' }}>Adobe Illustrator</strong> for vector art, <strong style={{ color: 'white' }}>InDesign</strong> for editorial layouts, <strong style={{ color: 'white' }}>CorelDRAW</strong> for print production, and <strong style={{ color: 'white' }}>Figma</strong> for modern UI/UX design.</p>
+                                </div>
+                                <div style={{ marginTop: '2.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                                        <Icon name="layers" size={20} color="var(--primary-yellow)" />
+                                        <div>
+                                            <h4 style={{ fontWeight: 700, color: 'white', textTransform: 'uppercase', marginBottom: '0.25rem', fontSize: '0.875rem' }}>Stack</h4>
+                                            <p style={{ fontSize: '0.875rem', color: '#9ca3af' }}>Ps, Ai, Id, Cdr, Figma</p>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem' }}>
+                                        <Icon name="zap" size={20} color="var(--primary-yellow)" />
+                                        <div>
+                                            <h4 style={{ fontWeight: 700, color: 'white', textTransform: 'uppercase', marginBottom: '0.25rem', fontSize: '0.875rem' }}>Status</h4>
+                                            <p style={{ fontSize: '0.875rem', color: '#9ca3af' }}>Open to Work / Freelance</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Reveal>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// ── SKILLS ─────────────────────────────────────────────────────────────────────
+function Skills() {
+    const skills = [
+        { name: 'Adobe Photoshop', level: 98, icon: 'image' },
+        { name: 'Adobe Illustrator', level: 95, icon: 'pen-tool' },
+        { name: 'CorelDRAW', level: 90, icon: 'pencil' },
+        { name: 'Figma (UI/UX)', level: 92, icon: 'layout-dashboard' },
+        { name: 'Adobe InDesign', level: 88, icon: 'book-open' },
+        { name: 'Photo Manipulation', level: 96, icon: 'wand-sparkles' },
+        { name: 'Brand Identity', level: 94, icon: 'fingerprint' },
+        { name: 'Print Media', level: 90, icon: 'printer' },
+        { name: 'Social Media Design', level: 92, icon: 'share-2' },
+    ];
+
+    return (
+        <section id="skills" className="section-padding" style={{ background: 'var(--dark-bg)' }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+                <Reveal direction="up">
+                    <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+                        <h2 className="section-title">Technical Expertise</h2>
+                        <p style={{ color: 'var(--text-muted)', maxWidth: '40rem', margin: '1.5rem auto 0', lineHeight: 1.7 }}>
+                            A comprehensive toolkit for visual problem solving, ranging from vector art to layout design.
+                        </p>
+                    </div>
+                </Reveal>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
+                    {skills.map((skill, i) => (
+                        <Reveal key={i} delay={i * 80} direction="up">
+                            <SkillCard skill={skill} />
+                        </Reveal>
+                    ))}
+                </div>
+
+                <Reveal delay={200} direction="up">
+                    <div style={{ marginTop: '4rem', padding: '2rem', background: 'linear-gradient(to right, rgba(0,123,255,0.2), transparent)', borderLeft: '4px solid var(--accent-blue)', display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'flex-start' }}>
+                        <div>
+                            <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>Versatile Design Workflow</h3>
+                            <p style={{ color: '#d1d5db' }}>I seamlessly switch between vector illustration, page layout, and UI prototyping to deliver complete brand experiences.</p>
+                        </div>
+                        <a href="https://app.trickle.so/storage/public/images/usr_1b475deb10000001/82bb6178-77df-480d-a62e-6a82cb5a8589.png?w=1208&h=1536" target="_blank" rel="noopener noreferrer"
+                            style={{ padding: '0.5rem 1.5rem', border: '1px solid var(--accent-blue)', color: 'var(--accent-blue)', background: 'transparent', fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.3s', fontFamily: 'Inter, sans-serif' }}
+                            onMouseEnter={e => { e.currentTarget.style.background = 'var(--accent-blue)'; e.currentTarget.style.color = 'white'; }}
+                            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--accent-blue)'; }}>
+                            <Icon name="external" size={16} /> Download Resume
+                        </a>
+                    </div>
+                </Reveal>
+            </div>
+        </section>
+    );
+}
+
+function SkillCard({ skill }) {
+    const [hovered, setHovered] = React.useState(false);
+    return (
+        <div className="skill-card" onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <div style={{ width: 48, height: 48, background: hovered ? 'var(--primary-yellow)' : 'rgba(255,255,255,0.05)', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s' }}>
+                    <Icon name={skill.icon} size={22} color={hovered ? 'black' : 'var(--primary-yellow)'} />
+                </div>
+                <span style={{ fontSize: '1.75rem', fontWeight: 700, fontFamily: 'Oswald, sans-serif', color: hovered ? 'var(--primary-yellow)' : 'rgba(255,255,255,0.2)', transition: 'color 0.3s' }}>{skill.level}%</span>
+            </div>
+            <h3 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.75rem' }}>{skill.name}</h3>
+            <div style={{ width: '100%', background: 'rgba(255,255,255,0.1)', height: 4, borderRadius: 9999, overflow: 'hidden' }}>
+                <div style={{ width: `${skill.level}%`, height: '100%', background: 'var(--primary-yellow)', transition: 'width 1s ease-out', boxShadow: hovered ? '0 0 10px var(--primary-yellow)' : 'none' }} />
+            </div>
+        </div>
+    );
+}
+
+// ── PORTFOLIO ──────────────────────────────────────────────────────────────────
+function Portfolio() {
+    const [activeFilter, setActiveFilter] = React.useState('All');
+    const [selectedProject, setSelectedProject] = React.useState(null);
+
+    const categories = ['All', 'Manipulation', 'Posters', 'Social Media', 'Branding', 'Logos', 'Packaging', 'Web Design', 'Illustration'];
+
+    const projects = [
+        { id: 18, title: "Comic Book Cover Mockup", category: "Posters", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/bbbe2e36-9078-49df-a187-69e299cb4ed2.png" },
+        { id: 19, title: "Book Cover Mockup", category: "Posters", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/0bdb2e5f-8add-46d1-9e4c-1124bd59f764.png" },
+        { id: 20, title: "Magazine Cover Mockup", category: "Posters", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/13c604de-d4c2-49f2-94b3-d5b36616cf81.png" },
+        { id: 21, title: "Dental Logo Design", category: "Logos", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/c0876cda-50eb-4f00-adb8-914104b423e2.png" },
+        { id: 22, title: "Prime Drink Labeling", category: "Packaging", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/e409a151-91bd-4fcd-bc91-64b1320f7ff2.png" },
+        { id: 23, title: "Nuvara Premium Logo", category: "Logos", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/d18ae2dd-e8ea-45d5-a598-2607530b2929.png" },
+        { id: 24, title: "Packaging Design Concept", category: "Packaging", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/22fd91a4-6cc7-4043-b1e8-e688d3a0a0ed.png" },
+        { id: 25, title: "RDR-2 Book Cover", category: "Posters", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/3f3c5e58-82ac-4ebb-a827-d407d724cbeb.png" },
+        { id: 26, title: "Stencil Design", category: "Illustration", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/094500e4-a105-40f5-ada8-7d6d72e27b54.png" },
+        { id: 27, title: "SRK Magazine Cover", category: "Posters", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/1a0858ac-d97c-4747-aee9-68f44697c96e.png" },
+        { id: 29, title: "Brand Logo Presentation", category: "Branding", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/8d9be965-f90d-4281-b65f-4e6f6372a5d0.png" },
+        { id: 30, title: "Bakery AI Logo", category: "Logos", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/2557b788-33af-4e11-9378-179a20267347.png" },
+        { id: 34, title: "Nuvara Logo Mockup", category: "Branding", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/0a50c669-6af7-4156-84d4-7901a63f0301.png" },
+        { id: 35, title: "Nuvara Packaging Design", category: "Packaging", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/24bebf27-c707-42b5-b456-193147de808f.png" },
+        { id: 11, title: "Comic Book Cover", category: "Illustration", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/e8e0e8bc-1c77-483c-88f7-147bf45fe84f.png" },
+        { id: 12, title: "Vector Portrait", category: "Illustration", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/4eae6ee7-da3e-4695-8cbe-2ceaef82d8f8.png" },
+        { id: 13, title: "Minimalist Avatar", category: "Illustration", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/b295e9da-1ac7-4d7d-90de-724bca5fc107.png" },
+        { id: 14, title: "Vector Doodling", category: "Illustration", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/3a5f9272-c90e-49ef-9e20-bcfbd8f3f426.png" },
+        { id: 15, title: "Illustration Sticker Vol. 1", category: "Illustration", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/314bfcc7-c0be-4dcb-b7e5-ba574cf8d6db.png" },
+        { id: 16, title: "Illustration Sticker Vol. 2", category: "Illustration", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/bd3e6e2b-54b3-4051-99a3-aa9465aebe5f.png" },
+        { id: 17, title: "Illustration Sticker Vol. 3", category: "Illustration", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/c2883d6f-86f2-4c64-9469-d55c230f8403.png" },
+        { id: 10, title: "Nike Air Max Branding", category: "Branding", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/36e003ad-2197-4eea-98f2-9c0887f081dc.png" },
+        { id: 1, title: "Surreal Mindscapes", category: "Manipulation", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/09c26da4-8db9-4121-b731-5f16856db28a.png" },
+        { id: 2, title: "Cinematic Movie Poster", category: "Posters", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/ad52489f-05ce-4be9-a16c-d64853169db3.png" },
+        { id: 4, title: "Web Interface Design", category: "Web Design", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/41c15876-4a67-442b-b9ae-f4d0141c951a.png" },
+        { id: 8, title: "Cosmetic Brand Identity", category: "Branding", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/361a5b76-4601-4bad-8856-794600c8be8e.png" },
+        { id: 6, title: "Editorial Magazine Cover", category: "Branding", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/1e221640-3b0e-4844-8107-4546abc856a4.png" },
+        { id: 5, title: "Brand Social Cover", category: "Social Media", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/d03e2d93-4ad1-4604-a922-2001211a547a.png" },
+        { id: 3, title: "Food & Beverage Creative", category: "Social Media", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/0b8772a8-acda-4973-8e45-629703196716.png" },
+        { id: 9, title: "Festival Campaign", category: "Social Media", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/5370cf68-6a17-47c6-a3f5-cc9ee5978791.png" },
+        { id: 7, title: "Product Retouching", category: "Manipulation", image: "https://app.trickle.so/storage/public/images/usr_1b475deb10000001/2f5bdd93-f55f-4133-84a3-d74f34ec5366.png" },
+    ];
+
+    const filtered = activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter);
+
+    return (
+        <section id="portfolio" className="section-padding" style={{ background: 'var(--card-bg)' }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '3rem' }}>
+                    <div>
+                        <h2 className="section-title">Selected Works</h2>
+                        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>A curation of my best pixels.</p>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {categories.map(cat => (
+                            <button key={cat} className={`filter-btn ${activeFilter === cat ? 'active' : ''}`} onClick={() => setActiveFilter(cat)}>{cat}</button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="masonry">
+                    {filtered.map((project, i) => (
+                        <Reveal key={project.id} delay={(i % 3) * 100} direction="up">
+                            <PortfolioItem project={project} onClick={() => setSelectedProject(project)} />
+                        </Reveal>
+                    ))}
+                </div>
+            </div>
+
+            {selectedProject && (
+                <div className="lightbox animate-fade-in" onClick={() => setSelectedProject(null)}>
+                    <div className="lightbox-inner animate-zoom-in" onClick={e => e.stopPropagation()}>
+                        <button onClick={() => setSelectedProject(null)} style={{ position: 'absolute', top: -48, right: 0, background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontFamily: 'Inter, sans-serif', fontSize: '0.875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}
+                            onMouseEnter={e => e.currentTarget.style.color = 'var(--primary-yellow)'}
+                            onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}>
+                            <span>Close</span> <Icon name="x" size={28} />
+                        </button>
+                        <img src={selectedProject.image} alt={selectedProject.title} style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', boxShadow: '0 25px 50px rgba(0,0,0,0.5)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 2 }} />
+                        <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                            <h3 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'white' }}>{selectedProject.title}</h3>
+                            <p style={{ color: 'var(--primary-yellow)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem', marginTop: '0.5rem' }}>{selectedProject.category}</p>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </section>
+    );
+}
+
+function PortfolioItem({ project, onClick }) {
+    const [hovered, setHovered] = React.useState(false);
+    return (
+        <div className="portfolio-item" onClick={onClick} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+            <img src={project.image} alt={project.title} loading="lazy" style={{ transform: hovered ? 'scale(1.1)' : 'scale(1)', transition: 'transform 0.7s' }} />
+            <div className="portfolio-overlay">
+                <div style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'var(--primary-yellow)', borderRadius: '50%', padding: '0.5rem', opacity: hovered ? 1 : 0, transform: hovered ? 'translateY(0)' : 'translateY(8px)', transition: 'all 0.3s' }}>
+                    <Icon name="maximize-2" size={18} color="black" />
+                </div>
+                <span style={{ color: 'var(--primary-yellow)', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.5rem' }}>{project.category}</span>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'white', lineHeight: 1.2 }}>{project.title}</h3>
+            </div>
+        </div>
+    );
+}
+
+// ── EDUCATION ──────────────────────────────────────────────────────────────────
+function Education() {
+    const items = [
+        { degree: "Post Graduate (MA)", institution: "Maharaja Ganga Singh University (MGSU)", year: "2023 – 2025", location: "Bikaner, Rajasthan", icon: "graduation-cap" },
+        { degree: "Certified Graphic Designer", institution: "Arena Animation — Adobe & CorelDRAW Certified", year: "2022 – 2023", location: "Jaipur, Rajasthan", icon: "award" },
+        { degree: "Digital Marketing Certification", institution: "Google Digital Garage", year: "2023", location: "Online", icon: "award" },
+    ];
+
+    return (
+        <section id="education" className="section-padding" style={{ background: 'var(--dark-bg)' }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+                <Reveal direction="up">
+                    <div style={{ marginBottom: '4rem' }}>
+                        <h2 className="section-title">Education</h2>
+                        <p style={{ color: 'var(--text-muted)', marginTop: '1rem' }}>Academic foundation and professional certifications.</p>
+                    </div>
+                </Reveal>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {items.map((item, i) => (
+                        <Reveal key={i} delay={i * 150} direction="left">
+                            <div className="edu-card">
+                                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem' }}>
+                                    <div style={{ width: 48, height: 48, background: 'rgba(255,215,0,0.1)', borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                        <Icon name={item.icon} size={22} color="var(--primary-yellow)" />
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                                            <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'white' }}>{item.degree}</h3>
+                                            <span style={{ background: 'rgba(255,215,0,0.1)', color: 'var(--primary-yellow)', padding: '0.25rem 0.75rem', fontSize: '0.75rem', fontWeight: 700, fontFamily: 'Inter, sans-serif' }}>{item.year}</span>
+                                        </div>
+                                        <p style={{ color: '#d1d5db', fontWeight: 500, marginBottom: '0.25rem' }}>{item.institution}</p>
+                                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>{item.location}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </Reveal>
+                    ))}
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// ── CONTACT ────────────────────────────────────────────────────────────────────
+function Contact() {
+    const [form, setForm] = React.useState({ name: '', email: '', message: '' });
+
+    const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        const subject = encodeURIComponent(`Portfolio Inquiry from ${form.name}`);
+        const body = encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`);
+        window.location.href = `mailto:altafdahima1@gmail.com?subject=${subject}&body=${body}`;
+    };
+
+    const socials = ['facebook', 'instagram', 'twitter', 'linkedin'];
+
+    return (
+        <section id="contact" className="section-padding" style={{ background: 'var(--card-bg)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: 0, right: 0, width: 256, height: 256, background: 'var(--accent-blue)', opacity: 0.05, filter: 'blur(100px)', borderRadius: '50%' }} />
+            <div style={{ position: 'absolute', bottom: 0, left: 0, width: 256, height: 256, background: 'var(--primary-yellow)', opacity: 0.05, filter: 'blur(100px)', borderRadius: '50%' }} />
+
+            <div style={{ maxWidth: '1280px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4rem' }}>
+                    <style>{`@media (min-width: 1024px) { .contact-grid { grid-template-columns: 1fr 1fr !important; } }`}</style>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '4rem' }} className="contact-grid">
+                        <Reveal direction="left">
+                            <div>
+                                <h2 className="section-title">Let's Create</h2>
+                                <h3 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1.5rem', color: 'white' }}>Have a project in mind?</h3>
+                                <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', fontSize: '1.125rem', lineHeight: 1.7 }}>
+                                    I'm currently available for freelance projects. Whether you need a killer album cover, a brand refresh, or daily social content, let's talk.
+                                </p>
+
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', marginBottom: '3rem' }}>
+                                    {[
+                                        { icon: 'mail', label: 'Email Me', value: 'altafdahima1@gmail.com', href: 'mailto:altafdahima1@gmail.com' },
+                                        { icon: 'phone', label: 'Call Me', value: '+91 774096 9668', href: 'tel:+917740969668' }
+                                    ].map(item => (
+                                        <a key={item.icon} href={item.href} style={{ display: 'flex', alignItems: 'center', gap: '1rem', textDecoration: 'none', color: 'white' }}
+                                            onMouseEnter={e => e.currentTarget.querySelector('.cval').style.color = 'var(--primary-yellow)'}
+                                            onMouseLeave={e => e.currentTarget.querySelector('.cval').style.color = 'white'}>
+                                            <div style={{ width: 48, height: 48, background: 'black', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'border-color 0.3s' }}>
+                                                <Icon name={item.icon} size={20} color="var(--primary-yellow)" />
+                                            </div>
+                                            <div>
+                                                <span style={{ display: 'block', fontSize: '0.7rem', textTransform: 'uppercase', color: '#6b7280', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>{item.label}</span>
+                                                <span className="cval" style={{ fontSize: '1.125rem', fontWeight: 700, transition: 'color 0.3s' }}>{item.value}</span>
+                                            </div>
+                                        </a>
+                                    ))}
+                                </div>
+
+                                <div>
+                                    <h4 style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '1rem' }}>Follow Me</h4>
+                                    <div style={{ display: 'flex', gap: '1rem' }}>
+                                        {socials.map(s => (
+                                            <a key={s} href="#" className="social-btn">
+                                                <Icon name={s} size={16} />
+                                            </a>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </Reveal>
+
+                        <Reveal direction="right" delay={200}>
+                            <div style={{ background: 'black', padding: '2.5rem', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 25px 50px rgba(0,0,0,0.5)' }}>
+                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    {[
+                                        { name: 'name', label: 'Your Name', type: 'text', placeholder: 'John Doe' },
+                                        { name: 'email', label: 'Your Email', type: 'email', placeholder: 'john@example.com' },
+                                    ].map(field => (
+                                        <div key={field.name}>
+                                            <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.5rem', color: '#9ca3af', fontFamily: 'Inter, sans-serif' }}>{field.label}</label>
+                                            <input type={field.type} name={field.name} value={form[field.name]} onChange={handleChange} className="contact-input" placeholder={field.placeholder} required />
+                                        </div>
+                                    ))}
+                                    <div>
+                                        <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '0.5rem', color: '#9ca3af', fontFamily: 'Inter, sans-serif' }}>Project Details</label>
+                                        <textarea name="message" value={form.message} onChange={handleChange} className="contact-input" placeholder="Tell me about your project..." rows={5} required style={{ resize: 'vertical' }} />
+                                    </div>
+                                    <button type="submit" className="btn-primary" style={{ width: '100%', padding: '1rem', fontSize: '1rem' }}>Send Message via Email</button>
+                                </form>
+                            </div>
+                        </Reveal>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
+
+// ── FOOTER ─────────────────────────────────────────────────────────────────────
+function Footer() {
+    return (
+        <footer style={{ background: 'black', padding: '3rem 1.5rem', borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center' }}>
+            <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+                <a href="#" style={{ fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.05em', display: 'inline-block', marginBottom: '1.5rem', color: 'white', textDecoration: 'none', fontFamily: 'Oswald, sans-serif' }}>
+                    ALTAF<span style={{ color: 'var(--primary-yellow)' }}>.</span>DAHIMA
+                </a>
+                <p style={{ color: '#6b7280', marginBottom: '2rem', maxWidth: '28rem', margin: '0 auto 2rem' }}>Creating visual experiences that matter. Based in Jaipur City, working worldwide.</p>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2rem' }}>
+                    {['About', 'Portfolio', 'Education', 'Contact'].map(name => (
+                        <a key={name} href={`#${name.toLowerCase()}`} style={{ fontSize: '0.75rem', fontWeight: 700, color: 'white', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.1em', transition: 'color 0.3s', fontFamily: 'Inter, sans-serif' }}
+                            onMouseEnter={e => e.target.style.color = 'var(--primary-yellow)'}
+                            onMouseLeave={e => e.target.style.color = 'white'}>
+                            {name}
+                        </a>
+                    ))}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+                    &copy; 2026 Altaf Dahima Portfolio. All Rights Reserved.
+                </div>
+            </div>
+        </footer>
+    );
+}
+
+// ── APP ────────────────────────────────────────────────────────────────────────
+class ErrorBoundary extends React.Component {
+    constructor(props) { super(props); this.state = { hasError: false }; }
+    static getDerivedStateFromError() { return { hasError: true }; }
+    componentDidCatch(error, info) { console.error(error, info); }
+    render() {
+        if (this.state.hasError) return (
+            <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#09090b', color: 'white', textAlign: 'center' }}>
+                <div>
+                    <h1 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Something went wrong</h1>
+                    <button onClick={() => window.location.reload()} style={{ padding: '0.5rem 1.5rem', background: 'var(--primary-yellow)', color: 'black', border: 'none', cursor: 'pointer', fontWeight: 700 }}>Reload</button>
+                </div>
+            </div>
+        );
+        return this.props.children;
+    }
+}
+
+function App() {
+    return (
+        <div style={{ minHeight: '100vh', background: 'var(--dark-bg)' }}>
+            <CustomCursor />
+            <Navbar />
+            <Hero />
+            <About />
+            <Skills />
+            <Portfolio />
+            <Education />
+            <Contact />
+            <Footer />
+        </div>
+    );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<ErrorBoundary><App /></ErrorBoundary>);
+</script>
+</body>
+</html>
